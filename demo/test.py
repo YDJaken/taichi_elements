@@ -10,7 +10,7 @@ from utils import create_output_folder
 from engine.mpm_solver import MPMSolver
 
 with_gui = True
-write_to_disk = True
+write_to_disk = False
 
 # Try to run on GPU
 ti.init(arch=ti.cuda,
@@ -48,7 +48,7 @@ mpm = MPMSolver(res=(R, R, R), size=1, unbounded=True, dt_scale=0.5, E_scale=8, 
 mpm.add_surface_collider(point=(0, 0, 0),
                          normal=(0, 1, 0),
                          surface=mpm.surface_slip,
-                         friction=0.5)
+                         friction=3.5)
 
 mpm.set_gravity((0, -25, 0))
 counter = 0
