@@ -4,14 +4,14 @@ import sys
 import time
 from pathlib import Path
 
-ti.init(arch=ti.cuda, use_unified_memory=False, device_memory_fraction=0.8)
+ti.init(arch=ti.cpu, use_unified_memory=False, device_memory_fraction=0.8)
 
 output_folder = sys.argv[5]
 os.makedirs(output_folder, exist_ok=True)
 
 from renderer import res, Renderer
 
-res = 512
+res = 256
 renderer = Renderer(dx=1 / res,
                     sphere_radius=0.3 / res,
                     shutter_time=2e-3,
@@ -21,7 +21,7 @@ with_gui = False
 if with_gui:
     gui = ti.GUI('Particle Renderer', res)
 
-spp = 200
+spp = 150
 
 
 def main():

@@ -8,7 +8,7 @@ import utils
 from utils import create_output_folder
 from engine.mpm_solver import MPMSolver
 
-with_gui = True
+with_gui = False
 write_to_disk = True
 
 # Try to run on GPU
@@ -17,7 +17,7 @@ ti.init(arch=ti.cuda,
         use_unified_memory=False,
         device_memory_fraction=0.7)
 
-max_num_particles = 4000000
+max_num_particles = 1000000
 
 if with_gui:
     gui = ti.GUI("MLS-MPM", res=512, background_color=0x112F41)
@@ -85,24 +85,24 @@ for frame in range(15000):
     print(f'frame {frame}')
     t = time.time()
 
-    if frame % 50 == 0 and mpm.n_particles[None] < max_num_particles:
+    if frame % 20 == 0 and mpm.n_particles[None] < max_num_particles:
         F = frame // 50
         r = 255 if F % 3 == 0 else 128
         g = 255 if F % 3 == 1 else 128
         b = 255 if F % 3 == 2 else 128
         mpm.add_mesh(triangles=triangles,
-                     material=MPMSolver.material_elastic,
+                     material=MPMSolver.material_water,
                      color=r * 65536 + g * 256 + b,
                      velocity=(0, -6, 0),
                      translation=(0.0, 0.16, (F % 2) * 0.4))
 
-    if frame > 60 and mpm.n_particles[None] < max_num_particles:
+    if frame > 10 and mpm.n_particles[None] < max_num_particles:
         i = frame % 3 - 1.5
         j = 0  # frame / 4 % 4 - 1
         colors = [0xFF8888, 0xEEEEFF, 0xFFFF55]
         materials = [
-            MPMSolver.material_elastic, MPMSolver.material_elastic,
-            MPMSolver.material_elastic
+            MPMSolver.material_elastic, MPMSolver.material_snow,
+            MPMSolver.material_sand
         ]
         mpm.add_mesh(triangles=triangles_small,
                      material=materials[frame % 3],
