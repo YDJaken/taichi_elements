@@ -345,22 +345,22 @@ class MPMSolver:
         def collide(t: ti.f32, dt: ti.f32):
             for I in ti.grouped(self.grid_m):
                 offset = I * self.dx - ti.Vector(center)
-                if offset.norm_sqr() < radius * radius:
-                    if ti.static(surface == self.surface_sticky):
-                        self.grid_v[I] = ti.Vector.zero(ti.f32, self.dim)
-                    else:
-                        v = self.grid_v[I]
-                        normal = offset.normalized(1e-5)
-                        normal_component = normal.dot(v)
-
-                        if ti.static(surface == self.surface_slip):
-                            # Project out all normal component
-                            v = v - normal * normal_component
-                        else:
-                            # Project out only inward normal component
-                            v = v - normal * min(normal_component, 0)
-
-                        self.grid_v[I] = v
+                # if offset.norm_sqr() < radius * radius:
+                #     if ti.static(surface == self.surface_sticky):
+                #         self.grid_v[I] = ti.Vector.zero(ti.f32, self.dim)
+                #     else:
+                #         v = self.grid_v[I]
+                #         normal = offset.normalized(1e-5)
+                #         normal_component = normal.dot(v)
+                #
+                #         if ti.static(surface == self.surface_slip):
+                #             # Project out all normal component
+                #             v = v - normal * normal_component
+                #         else:
+                #             # Project out only inward normal component
+                #             v = v - normal * min(normal_component, 0)
+                #
+                #         self.grid_v[I] = v
 
         self.grid_postprocess.append(collide)
 
